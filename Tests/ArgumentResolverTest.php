@@ -64,7 +64,7 @@ class ArgumentResolverTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \SRIO\ArgumentResolver\Exception\ResolutionException
      */
-    public function testArrayWithArgument()
+    public function testMissingArrayArgument()
     {
         $this->argumentResolver->resolveArguments([new TestClass(), 'arrayMethod'], [
             'foo' => 'bar',
@@ -72,7 +72,26 @@ class ArgumentResolverTest extends \PHPUnit_Framework_TestCase
         ]);
     }
 
+    public function testArrayArgument()
+    {
+        $arguments = $this->argumentResolver->resolveArguments([new TestClass(), 'arrayMethod'], [
+            'foo' => ['ok']
+        ]);
+
+        $this->assertEquals([['ok']], $arguments);
+    }
+
     public function testNamedParameters()
+    {
+        $arguments = $this->argumentResolver->resolveArguments([new TestClass(), 'namedParametersMethod'], [
+            'bar' => 1,
+            'foo' => 2
+        ]);
+
+        $this->assertEquals([2, 1], $arguments);
+    }
+
+    public function testNamedParametersOfDifferentTypes()
     {
         $arguments = $this->argumentResolver->resolveArguments([new TestClass(), 'namedParametersMethod'], [
             'bar' => '1',
@@ -125,5 +144,17 @@ class ArgumentResolverTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $this->assertEquals(['bar'], $arguments);
+    }
+
+    public function testCallableIsCalled()
+    {
+        $testClassProphet = $this->prophesize('SRIO\ArgumentResolver\Tests\Fixtures\TestClass');
+        $testClassProphet->namedParametersMethod(1, 2)->shouldBeCalled();
+        $testClass = $testClassProphet->reveal();
+
+        $this->argumentResolver->call([$testClass, 'namedParametersMethod'], [
+            'bar' => 2,
+            'foo' => 1
+        ]);
     }
 }

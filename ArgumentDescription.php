@@ -1,7 +1,7 @@
 <?php
 namespace SRIO\ArgumentResolver;
 
-class ArgumentDescription 
+class ArgumentDescription
 {
     const TYPE_ARRAY = 'array';
     const TYPE_SCALAR = 'scalar';

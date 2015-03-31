@@ -52,11 +52,6 @@ class ResolutionConstraintCollection
     {
         $constraintParameters = $constraint->getParameters();
         foreach ($parameters as $name => $value) {
-            if (is_int($name)) {
-                $name = $value;
-                $value = null;
-            }
-
             if (!array_key_exists($name, $constraintParameters)) {
                 return false;
             } else if (null !== $value && $constraintParameters[$name] !== $value) {

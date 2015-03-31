@@ -14,7 +14,7 @@ final class ArgumentDescriptor
         $reflection = $this->getReflection($callable);
         $descriptions = [];
 
-        foreach($reflection->getParameters() as $parameter) {
+        foreach ($reflection->getParameters() as $parameter) {
             $descriptions[] = new ArgumentDescription(
                 $parameter->name,
                 $parameter->getPosition(),
@@ -34,7 +34,7 @@ final class ArgumentDescriptor
     {
         if (is_object($value)) {
             return get_class($value);
-        } else if (is_array($value)) {
+        } elseif (is_array($value)) {
             return ArgumentDescription::TYPE_ARRAY;
         }
 
@@ -42,14 +42,14 @@ final class ArgumentDescriptor
     }
 
     /**
-     * @param \ReflectionParameter $parameter
+     * @param  \ReflectionParameter $parameter
      * @return string
      */
     private function getParameterType(\ReflectionParameter $parameter)
     {
         if (null !== ($class = $parameter->getClass())) {
             return $class->name;
-        } else if ($parameter->isArray()) {
+        } elseif ($parameter->isArray()) {
             return ArgumentDescription::TYPE_ARRAY;
         }
 
@@ -64,8 +64,9 @@ final class ArgumentDescriptor
     {
         if (!is_callable($callable)) {
             throw new \RuntimeException('Got a non-callable');
-        } else if (is_array($callable)) {
+        } elseif (is_array($callable)) {
             $reflectionClass = new \ReflectionClass($callable[0]);
+
             return $reflectionClass->getMethod($callable[1]);
         }
 

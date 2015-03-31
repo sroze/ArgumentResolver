@@ -9,13 +9,15 @@ final class ArgumentResolver
      * Call the given callable thing and inject the right values according
      * to the available values.
      *
-     * @param mixed $callable
-     * @param array $availableArguments
+     * @param  mixed $callable
+     * @param  array $availableArguments
      * @return mixed
      */
     public function call($callable, array $availableArguments = [])
     {
-        return call_user_func_array($callable, $this->resolveArguments($availableArguments));
+        $arguments = $this->resolveArguments($callable, $availableArguments);
+
+        return call_user_func_array($callable, $arguments);
     }
 
     /**
@@ -24,8 +26,8 @@ final class ArgumentResolver
      *
      * It returns an array with the value of arguments in the right order.
      *
-     * @param mixed $callable
-     * @param array $availableArguments
+     * @param  mixed $callable
+     * @param  array $availableArguments
      * @return array
      */
     public function resolveArguments($callable, array $availableArguments = [])
@@ -46,7 +48,7 @@ final class ArgumentResolver
                 if (!$description->isScalar()) {
                     if ($description->getType() === $descriptor->getValueType($argumentValue)) {
                         $priority += 2;
-                    } else if ($constraints->hasConstraint(ResolutionConstraint::STRICT_MATCHING, [
+                    } elseif ($constraints->hasConstraint(ResolutionConstraint::STRICT_MATCHING, [
                         'type' => $description->getType()
                     ])) {
                         throw new ResolutionException(sprintf(
@@ -63,12 +65,12 @@ final class ArgumentResolver
                 $resolutions[] = [
                     'priority' => $priority,
                     'position' => $description->getPosition(),
-                    'value' => $argumentValue
+                    'value' => $argumentValue,
                 ];
             }
         }
 
-        usort($resolutions, function($left, $right) {
+        usort($resolutions, function ($left, $right) {
             return $left['priority'] < $right['priority'] ? 1 : -1;
         });
 
@@ -90,6 +92,7 @@ final class ArgumentResolver
             }
         }
 
+        ksort($arguments);
 
         return $arguments;
     }
@@ -99,13 +102,13 @@ final class ArgumentResolver
      */
     private function sortDescriptions(array $descriptions)
     {
-        usort($descriptions, function($left, $right) {
+        usort($descriptions, function ($left, $right) {
             return $left->getPosition() > $right->getPosition() ? 1 : -1;
         });
     }
 
     /**
-     * @param ArgumentDescription[] $descriptions
+     * @param  ArgumentDescription[]          $descriptions
      * @return ResolutionConstraintCollection
      */
     private function getResolutionConstraints($descriptions)
