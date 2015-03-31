@@ -2,6 +2,7 @@
 namespace SRIO\ArgumentResolver\Tests;
 
 use SRIO\ArgumentResolver\ArgumentResolver;
+use SRIO\ArgumentResolver\ArgumentResolverFactory;
 use SRIO\ArgumentResolver\Tests\Fixtures\TestClass;
 use SRIO\ArgumentResolver\Tests\Fixtures\TestValueObject;
 
@@ -14,7 +15,7 @@ class ArgumentResolverTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->argumentResolver = new ArgumentResolver();
+        $this->argumentResolver = ArgumentResolverFactory::create();
     }
 
     public function testOneObjectArgument()

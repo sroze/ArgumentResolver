@@ -6,6 +6,19 @@ use SRIO\ArgumentResolver\Exception\ResolutionException;
 final class ArgumentResolver
 {
     /**
+     * @var ArgumentDescriptor
+     */
+    private $argumentDescriptor;
+
+    /**
+     * @param ArgumentDescriptor $argumentDescriptor
+     */
+    public function __construct(ArgumentDescriptor $argumentDescriptor)
+    {
+        $this->argumentDescriptor = $argumentDescriptor;
+    }
+
+    /**
      * Call the given callable thing and inject the right values according
      * to the available values.
      *
@@ -32,8 +45,7 @@ final class ArgumentResolver
      */
     public function resolveArguments($callable, array $availableArguments = [])
     {
-        $descriptor = new ArgumentDescriptor();
-        $descriptions = $descriptor->getDescriptions($callable);
+        $descriptions = $this->argumentDescriptor->getDescriptions($callable);
         $this->sortDescriptions($descriptions);
 
         $resolutions = [];
@@ -46,7 +58,7 @@ final class ArgumentResolver
                     $priority++;
                 }
                 if (!$description->isScalar()) {
-                    if ($description->getType() === $descriptor->getValueType($argumentValue)) {
+                    if ($description->getType() === $this->argumentDescriptor->getValueType($argumentValue)) {
                         $priority += 2;
                     } elseif ($constraints->hasConstraint(ResolutionConstraint::STRICT_MATCHING, [
                         'type' => $description->getType()
