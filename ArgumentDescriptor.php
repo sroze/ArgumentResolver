@@ -1,7 +1,7 @@
 <?php
 namespace SRIO\ArgumentResolver;
 
-class ArgumentDescriptor 
+final class ArgumentDescriptor
 {
     /**
      * Get argument descriptions of a callable.
@@ -19,26 +19,11 @@ class ArgumentDescriptor
                 $parameter->name,
                 $parameter->getPosition(),
                 $this->getParameterType($parameter),
-                $parameter->allowsNull()
+                !$parameter->isOptional()
             );
         }
 
         return $descriptions;
-    }
-
-    /**
-     * @param \ReflectionParameter $parameter
-     * @return string
-     */
-    private function getParameterType(\ReflectionParameter $parameter)
-    {
-        if (null !== ($class = $parameter->getClass())) {
-            return $class->name;
-        } else if ($parameter->isArray()) {
-            return 'array';
-        }
-
-        return 'scalar';
     }
 
     /**
@@ -50,10 +35,25 @@ class ArgumentDescriptor
         if (is_object($value)) {
             return get_class($value);
         } else if (is_array($value)) {
-            return 'array';
+            return ArgumentDescription::TYPE_ARRAY;
         }
 
-        return 'scalar';
+        return ArgumentDescription::TYPE_SCALAR;
+    }
+
+    /**
+     * @param \ReflectionParameter $parameter
+     * @return string
+     */
+    private function getParameterType(\ReflectionParameter $parameter)
+    {
+        if (null !== ($class = $parameter->getClass())) {
+            return $class->name;
+        } else if ($parameter->isArray()) {
+            return ArgumentDescription::TYPE_ARRAY;
+        }
+
+        return ArgumentDescription::TYPE_SCALAR;
     }
 
     /**

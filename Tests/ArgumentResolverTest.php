@@ -17,12 +17,10 @@ class ArgumentResolverTest extends \PHPUnit_Framework_TestCase
         $this->argumentResolver = new ArgumentResolver();
     }
 
-    public function testGetArguments()
+    public function testOneObjectArgument()
     {
         $object = new TestValueObject();
-        $testClass = new TestClass();
-
-        $arguments = $this->argumentResolver->resolveArguments([$testClass, 'valueObjectMethod'], [
+        $arguments = $this->argumentResolver->resolveArguments([new TestClass(), 'valueObjectMethod'], [
             'foo' => 'bar',
             'value' => $object
         ]);
@@ -30,17 +28,37 @@ class ArgumentResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($arguments, [$object]);
     }
 
-    public function testScalarAndTypeObjectArguments()
+    /**
+     * @expectedException \SRIO\ArgumentResolver\Exception\ResolutionException
+     */
+    public function testTypeObjectArgumentsAndDifferentScalarName()
+    {
+        $this->argumentResolver->resolveArguments([new TestClass(), 'objectAndScalarMethod'], [
+            'foo' => 'bar',
+            'value' => new TestValueObject()
+        ]);
+    }
+
+    public function testTypeObjectArgumentsAndSameScalarName()
     {
         $object = new TestValueObject();
-        $testClass = new TestClass();
-
-        $arguments = $this->argumentResolver->resolveArguments([$testClass, 'valueObjectAndScalarMethod'], [
-            'foo' => 'bar',
+        $arguments = $this->argumentResolver->resolveArguments([new TestClass(), 'objectAndScalarMethod'], [
+            'count' => 2,
             'value' => $object
         ]);
 
-        $this->assertEquals($arguments, [$object, 'bar']);
+        $this->assertEquals($arguments, [$object, 2]);
+    }
+
+    /**
+     * @expectedException \SRIO\ArgumentResolver\Exception\ResolutionException
+     */
+    public function testNoObjectOfTypeFound()
+    {
+        $this->argumentResolver->resolveArguments([new TestClass(), 'objectAndScalarMethod'], [
+            'foo' => 'bar',
+            'value' => new TestClass()
+        ]);
     }
 
     /**
@@ -48,12 +66,64 @@ class ArgumentResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testArrayWithArgument()
     {
-        $object = new TestValueObject();
-        $testClass = new TestClass();
-
-        $arguments = $this->argumentResolver->resolveArguments([$testClass, 'valueArrayMethod'], [
+        $this->argumentResolver->resolveArguments([new TestClass(), 'arrayMethod'], [
             'foo' => 'bar',
-            'value' => $object
+            'value' => new TestValueObject()
         ]);
+    }
+
+    public function testNamedParameters()
+    {
+        $arguments = $this->argumentResolver->resolveArguments([new TestClass(), 'namedParametersMethod'], [
+            'bar' => '1',
+            'foo' => 2
+        ]);
+
+        $this->assertEquals([2, '1'], $arguments);
+    }
+
+    /**
+     * @expectedException \SRIO\ArgumentResolver\Exception\ResolutionException
+     */
+    public function testTwoValueObjectsWithDifferentArgumentNames()
+    {
+        $this->argumentResolver->resolveArguments([new TestClass(), 'twoValueObjectsMethod'], [
+            'foo' => 'bar',
+            'a' => new TestValueObject(),
+            'b' => new TestValueObject()
+        ]);
+    }
+
+    public function testTwoValueObjectsWithSameArgumentNames()
+    {
+        $arguments = $this->argumentResolver->resolveArguments([new TestClass(), 'twoValueObjectsMethod'], [
+            'bar' => new TestValueObject('bar'),
+            'foo' => new TestValueObject('foo')
+        ]);
+
+        $this->assertEquals(2, count($arguments));
+        $this->assertTrue($arguments[0] instanceof TestValueObject);
+        $this->assertEquals($arguments[0]->getValue(), 'foo');
+        $this->assertTrue($arguments[1] instanceof TestValueObject);
+        $this->assertEquals($arguments[1]->getValue(), 'bar');
+    }
+
+    /**
+     * @expectedException \SRIO\ArgumentResolver\Exception\ResolutionException
+     */
+    public function testRequiredScalarNotResolved()
+    {
+        $this->argumentResolver->resolveArguments([new TestClass(), 'anOptionalScalarArgument'], [
+            'bar' => 'bar'
+        ]);
+    }
+
+    public function testOptionalScalarNotResolved()
+    {
+        $arguments = $this->argumentResolver->resolveArguments([new TestClass(), 'anOptionalScalarArgument'], [
+            'foo' => 'bar'
+        ]);
+
+        $this->assertEquals(['bar'], $arguments);
     }
 }

@@ -3,6 +3,9 @@ namespace SRIO\ArgumentResolver;
 
 class ArgumentDescription 
 {
+    const TYPE_ARRAY = 'array';
+    const TYPE_SCALAR = 'scalar';
+
     /**
      * @var string
      */
@@ -21,7 +24,7 @@ class ArgumentDescription
     /**
      * @var bool
      */
-    private $nullable;
+    private $required;
 
     /**
      * Constructor.
@@ -29,14 +32,14 @@ class ArgumentDescription
      * @param string $name
      * @param int    $position
      * @param string $type
-     * @param bool   $nullable
+     * @param bool   $required
      */
-    public function __construct($name, $position, $type, $nullable)
+    public function __construct($name, $position, $type, $required)
     {
         $this->name = $name;
         $this->position = $position;
         $this->type = $type;
-        $this->nullable = $nullable;
+        $this->required = $required;
     }
 
     /**
@@ -66,8 +69,16 @@ class ArgumentDescription
     /**
      * @return bool
      */
-    public function isNullable()
+    public function isRequired()
     {
-        return $this->nullable;
+        return $this->required;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isScalar()
+    {
+        return self::TYPE_SCALAR === $this->getType();
     }
 }

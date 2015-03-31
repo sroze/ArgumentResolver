@@ -7,11 +7,23 @@ class TestClass
     {
     }
 
-    public function valueObjectAndScalarMethod(TestValueObject $object, $count)
+    public function objectAndScalarMethod(TestValueObject $object, $count)
     {
     }
 
-    public function valueArrayMethod(array $collection)
+    public function arrayMethod(array $collection)
+    {
+    }
+
+    public function namedParametersMethod($foo, $bar)
+    {
+    }
+
+    public function twoValueObjectsMethod(TestValueObject $foo, TestValueObject $bar)
+    {
+    }
+
+    public function anOptionalScalarArgument($foo, $bar = null)
     {
     }
 }

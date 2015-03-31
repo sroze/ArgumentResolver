@@ -35,15 +35,25 @@ final class ArgumentResolver
         $this->sortDescriptions($descriptions);
 
         $resolutions = [];
+        $constraints = $this->getResolutionConstraints($descriptions);
         foreach ($descriptions as $description) {
             foreach ($availableArguments as $argumentName => $argumentValue) {
                 $priority = 0;
 
-                if ($description->getType() === $descriptor->getValueType($argumentValue)) {
-                    $priority += 2;
-                }
                 if ($description->getName() === $argumentName) {
                     $priority++;
+                }
+                if (!$description->isScalar()) {
+                    if ($description->getType() === $descriptor->getValueType($argumentValue)) {
+                        $priority += 2;
+                    } else if ($constraints->hasConstraint(ResolutionConstraint::STRICT_MATCHING, [
+                        'type' => $description->getType()
+                    ])) {
+                        throw new ResolutionException(sprintf(
+                            'Strict matching for type "%s" can\'t be resolved',
+                            $description->getType()
+                        ));
+                    }
                 }
 
                 if ($priority === 0) {
@@ -59,7 +69,7 @@ final class ArgumentResolver
         }
 
         usort($resolutions, function($left, $right) {
-            return $left['position'] < $right['position'] ? 1 : -1;
+            return $left['priority'] < $right['priority'] ? 1 : -1;
         });
 
         $arguments = [];
@@ -71,13 +81,15 @@ final class ArgumentResolver
             $arguments[$resolution['position']] = $resolution['value'];
         }
 
-        if (count($arguments) !== count($descriptions)) {
-            throw new ResolutionException(sprintf(
-                'Resolved %d arguments there\'s %d required arguments',
-                count($arguments),
-                count($descriptions)
-            ));
+        foreach ($descriptions as $description) {
+            if ($description->isRequired() && !array_key_exists($description->getPosition(), $arguments)) {
+                throw new ResolutionException(sprintf(
+                    'Argument at position %d is required and wasn\'t resolved',
+                    $description->getPosition()
+                ));
+            }
         }
+
 
         return $arguments;
     }
@@ -90,5 +102,26 @@ final class ArgumentResolver
         usort($descriptions, function($left, $right) {
             return $left->getPosition() > $right->getPosition() ? 1 : -1;
         });
+    }
+
+    /**
+     * @param ArgumentDescription[] $descriptions
+     * @return ResolutionConstraintCollection
+     */
+    private function getResolutionConstraints($descriptions)
+    {
+        $constraints = [];
+        $types = [];
+        foreach ($descriptions as $description) {
+            if (in_array($description->getType(), $types)) {
+                $constraints[] = new ResolutionConstraint(ResolutionConstraint::STRICT_MATCHING, [
+                    'type' => $description->getType()
+                ]);
+            }
+
+            $types[] = $description->getType();
+        }
+
+        return new ResolutionConstraintCollection($constraints);
     }
 }
