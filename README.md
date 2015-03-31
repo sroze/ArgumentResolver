@@ -1,5 +1,9 @@
 # Argument Resolver
 
+[![Build Status](https://travis-ci.org/sroze/ArgumentResolver.svg?branch=master)](https://travis-ci.org/sroze/ArgumentResolver)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/88e4a3f8-bc5e-44e2-84e4-5f8c514ad62f/mini.png)](https://insight.sensiolabs.com/projects/88e4a3f8-bc5e-44e2-84e4-5f8c514ad62f)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sroze/ArgumentResolver/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/sroze/ArgumentResolver/?branch=master)
+
 This lightweight library helps to automatically call a callable (function, method or closure) with a list of
 available arguments. The developer of the callable can then use type hinting and/or specific variable names
 to chose which arguments (s)he wants.

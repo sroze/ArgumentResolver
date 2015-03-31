@@ -114,7 +114,7 @@ final class ArgumentResolver
      */
     private function sortDescriptions(array $descriptions)
     {
-        usort($descriptions, function ($left, $right) {
+        usort($descriptions, function (ArgumentDescription $left, ArgumentDescription $right) {
             return $left->getPosition() > $right->getPosition() ? 1 : -1;
         });
     }

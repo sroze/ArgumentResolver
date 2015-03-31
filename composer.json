@@ -5,8 +5,9 @@
     "license": "MIT",
     "homepage": "https://github.com/sroze/ArgumentResolver",
     "keywords":  [
-        "instantiate",
-        "constructor"
+        "argument",
+        "resolver",
+        "type hint"
     ],
     "authors": [
         {
