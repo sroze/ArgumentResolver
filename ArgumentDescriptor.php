@@ -1,6 +1,8 @@
 <?php
 namespace SRIO\ArgumentResolver;
 
+use Doctrine\Common\Util\ClassUtils;
+
 final class ArgumentDescriptor
 {
     /**
@@ -33,7 +35,7 @@ final class ArgumentDescriptor
     public function getValueType($value)
     {
         if (is_object($value)) {
-            return get_class($value);
+            return $this->getObjectClass($value);
         } elseif (is_array($value)) {
             return ArgumentDescription::TYPE_ARRAY;
         }
@@ -71,5 +73,18 @@ final class ArgumentDescriptor
         }
 
         return new \ReflectionFunction($callable);
+    }
+    
+    /**
+     * Get object class.
+     * 
+     * It uses the Doctrine's `ClassUtils::getClass` method if exists, else the native `get_class` function.
+     * 
+     * @param object $object
+     * @return string
+     */
+    private function getObjectClass($object)
+    {
+        return class_exists('Doctrine\Common\Util\ClassUtils') ? ClassUtils::getClass($object) : get_class($object);
     }
 }
