@@ -1,7 +1,8 @@
 <?php
+
 namespace ArgumentResolver\Resolution;
 
-class ResolutionConstraintCollection 
+class ResolutionConstraintCollection
 {
     /**
      * @var ResolutionConstraint[]
@@ -17,8 +18,9 @@ class ResolutionConstraintCollection
     }
 
     /**
-     * @param int $type
+     * @param int   $type
      * @param array $withParameters
+     *
      * @return bool
      */
     public function hasConstraint($type, array $withParameters = [])
@@ -27,8 +29,9 @@ class ResolutionConstraintCollection
     }
 
     /**
-     * @param int $type
+     * @param int   $type
      * @param array $withParameters
+     *
      * @return ResolutionConstraint[]
      */
     public function getConstraints($type, array $withParameters = [])
@@ -45,7 +48,8 @@ class ResolutionConstraintCollection
 
     /**
      * @param ResolutionConstraint $constraint
-     * @param array $parameters
+     * @param array                $parameters
+     *
      * @return bool
      */
     private function constraintHasParameters(ResolutionConstraint $constraint, array $parameters)
@@ -54,7 +58,7 @@ class ResolutionConstraintCollection
         foreach ($parameters as $name => $value) {
             if (!array_key_exists($name, $constraintParameters)) {
                 return false;
-            } else if (null !== $value && $constraintParameters[$name] !== $value) {
+            } elseif (null !== $value && $constraintParameters[$name] !== $value) {
                 return false;
             }
         }

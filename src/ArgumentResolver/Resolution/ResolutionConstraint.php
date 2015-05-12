@@ -1,7 +1,8 @@
 <?php
+
 namespace ArgumentResolver\Resolution;
 
-class ResolutionConstraint 
+class ResolutionConstraint
 {
     const STRICT_MATCHING = 1;
 

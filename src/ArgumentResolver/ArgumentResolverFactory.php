@@ -1,4 +1,5 @@
 <?php
+
 namespace ArgumentResolver;
 
 final class ArgumentResolverFactory

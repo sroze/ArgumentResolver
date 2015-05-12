@@ -5,13 +5,12 @@ namespace spec\ArgumentResolver;
 use ArgumentResolver\ArgumentResolver;
 use ArgumentResolver\Resolution\ResolutionConstraint;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class CallableRunnerSpec extends ObjectBehavior
 {
     function it_can_run_an_anonymous_function(ArgumentResolver $argumentResolver)
     {
-        $callable = function($foo) {
+        $callable = function ($foo) {
             return $foo;
         };
         $argumentResolver->resolveArguments($callable, [], false)->willReturn(['bar']);

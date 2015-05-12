@@ -3,7 +3,6 @@
 namespace spec\ArgumentResolver\Resolution;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ResolutionConstraintCollectionSpec extends ObjectBehavior
 {

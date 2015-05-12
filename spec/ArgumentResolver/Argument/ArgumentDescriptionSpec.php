@@ -4,7 +4,6 @@ namespace spec\ArgumentResolver\Argument;
 
 use ArgumentResolver\Argument\ArgumentDescription;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ArgumentDescriptionSpec extends ObjectBehavior
 {

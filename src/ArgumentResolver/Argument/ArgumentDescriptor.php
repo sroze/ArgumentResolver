@@ -1,4 +1,5 @@
 <?php
+
 namespace ArgumentResolver\Argument;
 
 use Doctrine\Common\Util\ClassUtils;
@@ -9,20 +10,21 @@ class ArgumentDescriptor
      * Get argument descriptions of a callable.
      *
      * @param $callable
-     * @return ArgumentDescription[]
+     *
+     * @return ArgumentDescriptions
      */
     public function getDescriptions($callable)
     {
         $reflection = $this->getReflection($callable);
-        $descriptions = [];
+        $descriptions = new ArgumentDescriptions();
 
         foreach ($reflection->getParameters() as $parameter) {
-            $descriptions[] = new ArgumentDescription(
+            $descriptions->add(new ArgumentDescription(
                 $parameter->name,
                 $parameter->getPosition(),
                 $this->getParameterType($parameter),
                 !$parameter->isOptional()
-            );
+            ));
         }
 
         return $descriptions;
@@ -30,6 +32,7 @@ class ArgumentDescriptor
 
     /**
      * @param $value
+     *
      * @return string
      */
     public function getValueType($value)
@@ -44,7 +47,8 @@ class ArgumentDescriptor
     }
 
     /**
-     * @param  \ReflectionParameter $parameter
+     * @param \ReflectionParameter $parameter
+     *
      * @return string
      */
     private function getParameterType(\ReflectionParameter $parameter)
@@ -60,6 +64,7 @@ class ArgumentDescriptor
 
     /**
      * @param $callable
+     *
      * @return \ReflectionFunctionAbstract
      */
     private function getReflection($callable)
@@ -74,13 +79,14 @@ class ArgumentDescriptor
 
         return new \ReflectionFunction($callable);
     }
-    
+
     /**
      * Get object class.
-     * 
+     *
      * It uses the Doctrine's `ClassUtils::getClass` method if exists, else the native `get_class` function.
-     * 
+     *
      * @param object $object
+     *
      * @return string
      */
     private function getObjectClass($object)

@@ -3,7 +3,6 @@
 namespace spec\ArgumentResolver\Argument;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ArgumentDescriptorSpec extends ObjectBehavior
 {

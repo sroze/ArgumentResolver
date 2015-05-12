@@ -1,4 +1,5 @@
 <?php
+
 namespace ArgumentResolver;
 
 class CallableRunner
@@ -17,8 +18,9 @@ class CallableRunner
      * Run the given callable with arguments from the available ones.
      *
      * @param callable $callable
-     * @param array $availableArguments
-     * @param bool $strict
+     * @param array    $availableArguments
+     * @param bool     $strict
+     *
      * @return mixed
      */
     public function run(callable $callable, array $availableArguments, $strict = false)

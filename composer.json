@@ -18,7 +18,8 @@
     ],
     "require-dev": {
         "phpspec/phpspec": "~2.2",
-        "doctrine/common": "~2.5"
+        "doctrine/common": "~2.5",
+        "fabpot/php-cs-fixer": "~1.8"
     },
     "autoload": {
         "psr-0": {
