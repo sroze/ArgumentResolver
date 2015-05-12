@@ -17,6 +17,13 @@ class ResolutionsSpec extends ObjectBehavior
         $this->add(new Resolution(1, 2, 3));
     }
 
+    function it_supports_addind_collection_of_resolutions()
+    {
+        $this->addCollection([
+            new Resolution(1, 2, 3)
+        ]);
+    }
+
     function it_is_Traversable()
     {
         $this->shouldHaveType(\Traversable::class);
@@ -39,6 +46,19 @@ class ResolutionsSpec extends ObjectBehavior
         $this->add(new Resolution(2, 'bar', 2));
         $this->add(new Resolution(1, 2, 2));
 
-        $this->toArgumentsArray()->shouldReturn(['foo', 2, 'bar']);
+        $this->toArgumentsArray()->shouldReturn([
+            'foo',
+            2,
+            'bar'
+        ]);
+    }
+
+    function it_returns_the_missing_resolution_keys()
+    {
+        $this->add(new Resolution(0, 'foo', 1));
+        $this->add(new Resolution(2, 'bar', 2));
+        $this->add(new Resolution(4, 'bar', 2));
+
+        $this->getMissingResolutionPositions()->shouldReturn([1, 3]);
     }
 }

@@ -23,7 +23,8 @@ class ArgumentDescriptor
                 $parameter->name,
                 $parameter->getPosition(),
                 $this->getParameterType($parameter),
-                !$parameter->isOptional()
+                !$parameter->isOptional(),
+                $parameter->getDefaultValue()
             ));
         }
 

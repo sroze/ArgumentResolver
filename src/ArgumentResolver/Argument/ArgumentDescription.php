@@ -28,19 +28,26 @@ class ArgumentDescription
     private $required;
 
     /**
+     * @var mixed
+     */
+    private $defaultValue;
+
+    /**
      * Constructor.
      *
      * @param string $name
-     * @param int    $position
+     * @param int $position
      * @param string $type
-     * @param bool   $required
+     * @param bool $required
+     * @param mixed $defaultValue
      */
-    public function __construct($name, $position, $type, $required)
+    public function __construct($name, $position, $type, $required, $defaultValue = null)
     {
         $this->name = $name;
         $this->position = $position;
         $this->type = $type;
         $this->required = $required;
+        $this->defaultValue = $defaultValue;
     }
 
     /**
@@ -73,6 +80,14 @@ class ArgumentDescription
     public function isRequired()
     {
         return $this->required;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDefaultValue()
+    {
+        return $this->defaultValue;
     }
 
     /**

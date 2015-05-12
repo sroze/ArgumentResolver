@@ -32,4 +32,13 @@ class ArgumentDescriptionsSpec extends ObjectBehavior
             new ArgumentDescription('foo', 1, ArgumentDescription::TYPE_SCALAR, true),
         ]);
     }
+
+    function it_returns_the_description_at_the_given_position()
+    {
+        $this->add(new ArgumentDescription('foo', 0, ArgumentDescription::TYPE_SCALAR, true));
+        $description = new ArgumentDescription('bar', 1, ArgumentDescription::TYPE_SCALAR, true);
+        $this->add($description);
+
+        $this->getByPosition(1)->shouldReturn($description);
+    }
 }

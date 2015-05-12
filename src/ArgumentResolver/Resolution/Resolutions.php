@@ -26,6 +26,16 @@ class Resolutions implements \IteratorAggregate
     }
 
     /**
+     * @param array $resolutions
+     */
+    public function addCollection(array $resolutions)
+    {
+        foreach ($resolutions as $resolution) {
+            $this->add($resolution);
+        }
+    }
+
+    /**
      * Sort `Resolution`s by priority.
      *
      * The higher the priority is, the first the `Resolution` will be.
@@ -56,7 +66,6 @@ class Resolutions implements \IteratorAggregate
         }
 
         ksort($arguments);
-
         return $arguments;
     }
 
@@ -74,5 +83,50 @@ class Resolutions implements \IteratorAggregate
     public function toArray()
     {
         return $this->resolutions;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMissingResolutionPositions()
+    {
+        $positions = [];
+
+        foreach (range(0, $this->getHighestPosition()) as $position) {
+            if (null === $this->getByPosition($position)) {
+                $positions[] = $position;
+            }
+        }
+
+        return $positions;
+    }
+
+    /**
+     * @return int
+     */
+    private function getHighestPosition()
+    {
+        $position = 0;
+
+        foreach ($this->resolutions as $resolution) {
+            $position = max($position, $resolution->position());
+        }
+
+        return $position;
+    }
+
+    /**
+     * @param $position
+     * @return Resolution|null
+     */
+    private function getByPosition($position)
+    {
+        foreach ($this->resolutions as $resolution) {
+            if ($resolution->position() === $position) {
+                return $resolution;
+            }
+        }
+
+        return null;
     }
 }

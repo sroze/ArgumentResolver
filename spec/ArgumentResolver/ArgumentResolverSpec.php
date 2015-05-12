@@ -57,18 +57,6 @@ class ArgumentResolverSpec extends ObjectBehavior
         ])->shouldReturn(['the-object', 2]);
     }
 
-    function it_throws_an_exception_if_scalar_argument_as_a_wrong_name(ArgumentDescriptor $argumentDescriptor)
-    {
-        $this->beConstructedWith($argumentDescriptor, new ConstraintResolver());
-        $callable = function () {};
-        $this->stubAnObjectAndScalarMethod($argumentDescriptor, $callable);
-
-        $this->shouldThrow(ResolutionException::class)->during('resolveArguments', [$callable, [
-            'foo' => 2,
-            'value' => 'the-object',
-        ]]);
-    }
-
     function it_resolves_typed_arguments_by_their_name_if_two_arguments_of_the_same_type(ArgumentDescriptor $argumentDescriptor)
     {
         $this->beConstructedWith($argumentDescriptor, new ConstraintResolver());
@@ -101,6 +89,21 @@ class ArgumentResolverSpec extends ObjectBehavior
         $this->resolveArguments($callable, [
             'foo' => 'bar',
         ])->shouldReturn(['bar']);
+    }
+
+    function it_set_default_value_if_an_optional_argument_is_missing_and_needed(ArgumentDescriptor $argumentDescriptor)
+    {
+        $this->beConstructedWith($argumentDescriptor, new ConstraintResolver());
+        $callable = function () {};
+        $argumentDescriptor->getDescriptions($callable)->willReturn(new ArgumentDescriptions([
+            new ArgumentDescription('foo', 0, ArgumentDescription::TYPE_SCALAR, false, 'first'),
+            new ArgumentDescription('bar', 1, ArgumentDescription::TYPE_SCALAR, false, 'second'),
+        ]));
+        $argumentDescriptor->getValueType('baz')->willReturn(ArgumentDescription::TYPE_SCALAR);
+
+        $this->resolveArguments($callable, [
+            'bar' => 'baz',
+        ])->shouldReturn(['first', 'baz']);
     }
 
     function it_throw_an_exception_if_required_argument_is_missing(ArgumentDescriptor $argumentDescriptor)

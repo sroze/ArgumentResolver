@@ -11,6 +11,7 @@ use ArgumentResolver\Resolution\Resolution;
 use ArgumentResolver\Resolution\ResolutionConstraint;
 use ArgumentResolver\Resolution\ResolutionConstraintCollection;
 use ArgumentResolver\Resolution\Resolutions;
+use Prophecy\Argument;
 
 class ArgumentResolver
 {
@@ -53,19 +54,35 @@ class ArgumentResolver
 
         $resolutions = new Resolutions();
         foreach ($descriptions as $description) {
-            foreach ($availableArguments as $argumentName => $argumentValue) {
-                $priority = $this->getArgumentPriority($constraints, $description, $argumentName, $argumentValue);
+            $argumentResolutions = $this->getArgumentResolutions($constraints, $description, $availableArguments);
+            $resolutions->addCollection($argumentResolutions);
+        }
 
-                if ($priority > 0) {
-                    $resolutions->add(new Resolution($description->getPosition(), $argumentValue, $priority));
-                }
+        $this->addMissingResolutions($resolutions, $descriptions);
+        $arguments = $resolutions->sortByPriority()->toArgumentsArray();
+
+        return $arguments;
+    }
+
+    /**
+     * @param ResolutionConstraintCollection $constraints
+     * @param ArgumentDescription $description
+     * @param array $availableArguments
+     * @return Resolution[]
+     */
+    private function getArgumentResolutions(ResolutionConstraintCollection $constraints, ArgumentDescription $description, array $availableArguments)
+    {
+        $resolutions = [];
+
+        foreach ($availableArguments as $argumentName => $argumentValue) {
+            $priority = $this->getArgumentPriority($constraints, $description, $argumentName, $argumentValue);
+
+            if ($priority > 0) {
+                $resolutions[] = new Resolution($description->getPosition(), $argumentValue, $priority);
             }
         }
 
-        $arguments = $resolutions->sortByPriority()->toArgumentsArray();
-        $this->assertThereNotMissingRequiredArgument($descriptions, $arguments);
-
-        return $arguments;
+        return $resolutions;
     }
 
     /**
@@ -102,20 +119,24 @@ class ArgumentResolver
     }
 
     /**
+     * @param Resolutions $resolutions
      * @param ArgumentDescriptions $descriptions
-     * @param array                $arguments
-     *
      * @throws ResolutionException
      */
-    private function assertThereNotMissingRequiredArgument(ArgumentDescriptions $descriptions, array $arguments)
+    private function addMissingResolutions(Resolutions $resolutions, ArgumentDescriptions $descriptions)
     {
-        foreach ($descriptions as $description) {
-            if ($description->isRequired() && !array_key_exists($description->getPosition(), $arguments)) {
+        $missingResolutionPositions = $resolutions->getMissingResolutionPositions();
+
+        foreach ($missingResolutionPositions as $position) {
+            $description = $descriptions->getByPosition($position);
+            if ($description->isRequired()) {
                 throw new ResolutionException(sprintf(
                     'Argument at position %d is required and wasn\'t resolved',
                     $description->getPosition()
                 ));
             }
+
+            $resolutions->add(new Resolution($description->getPosition(), $description->getDefaultValue(), 0));
         }
     }
 }

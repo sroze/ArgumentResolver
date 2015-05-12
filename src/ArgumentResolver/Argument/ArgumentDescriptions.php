@@ -54,4 +54,19 @@ class ArgumentDescriptions implements \IteratorAggregate
     {
         return $this->descriptions;
     }
+
+    /**
+     * @param int $position
+     * @return ArgumentDescription|null
+     */
+    public function getByPosition($position)
+    {
+        foreach ($this->descriptions as $description) {
+            if ($description->getPosition() === $position) {
+                return $description;
+            }
+        }
+
+        return null;
+    }
 }
