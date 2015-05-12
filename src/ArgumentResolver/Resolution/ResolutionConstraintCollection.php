@@ -1,5 +1,5 @@
 <?php
-namespace ArgumentResolver;
+namespace ArgumentResolver\Resolution;
 
 class ResolutionConstraintCollection 
 {

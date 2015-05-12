@@ -1,9 +1,13 @@
 <?php
 namespace ArgumentResolver;
 
+use ArgumentResolver\Argument\ArgumentDescription;
+use ArgumentResolver\Argument\ArgumentDescriptor;
 use ArgumentResolver\Exception\ResolutionException;
+use ArgumentResolver\Resolution\ResolutionConstraint;
+use ArgumentResolver\Resolution\ResolutionConstraintCollection;
 
-final class ArgumentResolver
+class ArgumentResolver
 {
     /**
      * @var ArgumentDescriptor

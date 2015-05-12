@@ -1,9 +1,9 @@
 <?php
-namespace ArgumentResolver;
+namespace ArgumentResolver\Argument;
 
 use Doctrine\Common\Util\ClassUtils;
 
-final class ArgumentDescriptor
+class ArgumentDescriptor
 {
     /**
      * Get argument descriptions of a callable.
