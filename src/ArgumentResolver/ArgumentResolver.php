@@ -11,7 +11,6 @@ use ArgumentResolver\Resolution\Resolution;
 use ArgumentResolver\Resolution\ResolutionConstraint;
 use ArgumentResolver\Resolution\ResolutionConstraintCollection;
 use ArgumentResolver\Resolution\Resolutions;
-use Prophecy\Argument;
 
 class ArgumentResolver
 {
