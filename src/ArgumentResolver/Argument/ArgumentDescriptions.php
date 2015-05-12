@@ -57,6 +57,7 @@ class ArgumentDescriptions implements \IteratorAggregate
 
     /**
      * @param int $position
+     *
      * @return ArgumentDescription|null
      */
     public function getByPosition($position)
@@ -67,6 +68,6 @@ class ArgumentDescriptions implements \IteratorAggregate
             }
         }
 
-        return null;
+        return;
     }
 }

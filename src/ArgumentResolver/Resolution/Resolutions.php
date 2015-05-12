@@ -66,6 +66,7 @@ class Resolutions implements \IteratorAggregate
         }
 
         ksort($arguments);
+
         return $arguments;
     }
 
@@ -117,6 +118,7 @@ class Resolutions implements \IteratorAggregate
 
     /**
      * @param $position
+     *
      * @return Resolution|null
      */
     private function getByPosition($position)
@@ -127,6 +129,6 @@ class Resolutions implements \IteratorAggregate
             }
         }
 
-        return null;
+        return;
     }
 }

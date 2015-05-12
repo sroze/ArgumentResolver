@@ -66,8 +66,9 @@ class ArgumentResolver
 
     /**
      * @param ResolutionConstraintCollection $constraints
-     * @param ArgumentDescription $description
-     * @param array $availableArguments
+     * @param ArgumentDescription            $description
+     * @param array                          $availableArguments
+     *
      * @return Resolution[]
      */
     private function getArgumentResolutions(ResolutionConstraintCollection $constraints, ArgumentDescription $description, array $availableArguments)
@@ -119,8 +120,9 @@ class ArgumentResolver
     }
 
     /**
-     * @param Resolutions $resolutions
+     * @param Resolutions          $resolutions
      * @param ArgumentDescriptions $descriptions
+     *
      * @throws ResolutionException
      */
     private function addMissingResolutions(Resolutions $resolutions, ArgumentDescriptions $descriptions)

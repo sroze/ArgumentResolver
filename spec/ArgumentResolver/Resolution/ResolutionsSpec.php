@@ -20,7 +20,7 @@ class ResolutionsSpec extends ObjectBehavior
     function it_supports_addind_collection_of_resolutions()
     {
         $this->addCollection([
-            new Resolution(1, 2, 3)
+            new Resolution(1, 2, 3),
         ]);
     }
 
@@ -49,7 +49,7 @@ class ResolutionsSpec extends ObjectBehavior
         $this->toArgumentsArray()->shouldReturn([
             'foo',
             2,
-            'bar'
+            'bar',
         ]);
     }
 

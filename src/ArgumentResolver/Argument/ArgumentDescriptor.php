@@ -70,6 +70,10 @@ class ArgumentDescriptor
      */
     private function getReflection($callable)
     {
+        if ($callable instanceof \ReflectionFunction) {
+            return $callable;
+        }
+
         if (!is_callable($callable)) {
             throw new \RuntimeException('Got a non-callable');
         } elseif (is_array($callable)) {

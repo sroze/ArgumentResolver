@@ -4,7 +4,6 @@ namespace spec\ArgumentResolver;
 
 use ArgumentResolver\ArgumentResolver;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ArgumentResolverFactorySpec extends ObjectBehavior
 {

@@ -19,16 +19,18 @@ composer require sroze/argument-resolver
 
 The argument resolver can be created easily using the `ArgumentResolverFactory` class:
 ```php
-use SRIO\ArgumentResolver\ArgumentResolverFactory;
+use ArgumentResolver\ArgumentResolverFactory;
 
 $argumentResolver = ArgumentResolverFactory::create();
 ```
 
 The `resolveArguments` method returns an ordered array of resolved arguments for the given callable. The method's arguments
 are:
-1. The [callable](http://php.net/manual/en/language.types.callable.php)
-2. The available arguments
 
+1. The [callable](http://php.net/manual/en/language.types.callable.php)
+2. The available arguments, as an array
+
+Here's an example of how it can be used to have arguments of some closures based on a set of available arguments:
 ```php
 $closures = [
     function(MyClass $object) {
@@ -78,6 +80,14 @@ Because when you've resolved the needed arguments of a given callable it's often
 ```php
 $runner = new CallableRunner($argumentResolver);
 $runner->run($callable, $availableArguments);
+```
+
+## Instantiate an object
+
+Sometimes, you would like to instantiate an object with a set of arguments. Here's the `Instanciator` usage:
+```php
+$instantiator = new Instantiator($argumentResolver);
+$instantiator->instantiate(YourClassName::class, $availableArguments);
 ```
 
 ## Rules

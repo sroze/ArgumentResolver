@@ -36,10 +36,10 @@ class ArgumentDescription
      * Constructor.
      *
      * @param string $name
-     * @param int $position
+     * @param int    $position
      * @param string $type
-     * @param bool $required
-     * @param mixed $defaultValue
+     * @param bool   $required
+     * @param mixed  $defaultValue
      */
     public function __construct($name, $position, $type, $required, $defaultValue = null)
     {
