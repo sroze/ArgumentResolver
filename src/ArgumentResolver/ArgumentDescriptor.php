@@ -1,5 +1,5 @@
 <?php
-namespace SRIO\ArgumentResolver;
+namespace ArgumentResolver;
 
 use Doctrine\Common\Util\ClassUtils;
 

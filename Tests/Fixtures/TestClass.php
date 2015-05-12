@@ -1,5 +1,5 @@
 <?php
-namespace SRIO\ArgumentResolver\Tests\Fixtures;
+namespace ArgumentResolver\Tests\Fixtures;
 
 class TestClass 
 {

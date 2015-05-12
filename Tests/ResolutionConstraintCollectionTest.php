@@ -1,8 +1,8 @@
 <?php
-namespace SRIO\ArgumentResolver\Tests;
+namespace ArgumentResolver\Tests;
 
-use SRIO\ArgumentResolver\ResolutionConstraint;
-use SRIO\ArgumentResolver\ResolutionConstraintCollection;
+use ArgumentResolver\ResolutionConstraint;
+use ArgumentResolver\ResolutionConstraintCollection;
 
 class ResolutionConstraintCollectionTest extends \PHPUnit_Framework_TestCase
 {

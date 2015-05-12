@@ -1,7 +1,7 @@
 <?php
-namespace SRIO\ArgumentResolver;
+namespace ArgumentResolver;
 
-use SRIO\ArgumentResolver\Exception\ResolutionException;
+use ArgumentResolver\Exception\ResolutionException;
 
 final class ArgumentResolver
 {
@@ -19,21 +19,6 @@ final class ArgumentResolver
     }
 
     /**
-     * Call the given callable thing and inject the right values according
-     * to the available values.
-     *
-     * @param  mixed $callable
-     * @param  array $availableArguments
-     * @return mixed
-     */
-    public function call($callable, array $availableArguments = [])
-    {
-        $arguments = $this->resolveArguments($callable, $availableArguments);
-
-        return call_user_func_array($callable, $arguments);
-    }
-
-    /**
      * Resolve the arguments needed by the given callable and the order of these
      * arguments.
      *
@@ -41,9 +26,10 @@ final class ArgumentResolver
      *
      * @param  mixed $callable
      * @param  array $availableArguments
+     * @param bool $strict
      * @return array
      */
-    public function resolveArguments($callable, array $availableArguments = [])
+    public function resolveArguments($callable, array $availableArguments = [], $strict = false)
     {
         $descriptions = $this->argumentDescriptor->getDescriptions($callable);
         $this->sortDescriptions($descriptions);

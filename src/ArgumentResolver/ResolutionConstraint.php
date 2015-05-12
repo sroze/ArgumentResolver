@@ -1,5 +1,5 @@
 <?php
-namespace SRIO\ArgumentResolver;
+namespace ArgumentResolver;
 
 class ResolutionConstraint 
 {

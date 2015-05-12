@@ -1,8 +1,8 @@
 <?php
 namespace SRIO\ArgumentResolver\Tests;
 
-use SRIO\ArgumentResolver\ArgumentDescription;
-use SRIO\ArgumentResolver\ArgumentDescriptor;
+use ArgumentResolver\ArgumentDescription;
+use ArgumentResolver\ArgumentDescriptor;
 
 class ArgumentDescriptorTest extends \PHPUnit_Framework_TestCase
 {

@@ -1,8 +1,8 @@
 <?php
 namespace SRIO\ArgumentResolver\Tests;
 
-use SRIO\ArgumentResolver\ArgumentResolver;
-use SRIO\ArgumentResolver\ArgumentResolverFactory;
+use ArgumentResolver\ArgumentResolver;
+use ArgumentResolver\ArgumentResolverFactory;
 
 class ArgumentResolverFactoryTest extends \PHPUnit_Framework_TestCase
 {

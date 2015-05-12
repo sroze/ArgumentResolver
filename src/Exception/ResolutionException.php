@@ -1,5 +1,5 @@
 <?php
-namespace SRIO\ArgumentResolver\Exception;
+namespace ArgumentResolver\Exception;
 
 class ResolutionException extends \RuntimeException
 {

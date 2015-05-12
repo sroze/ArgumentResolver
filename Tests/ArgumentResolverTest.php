@@ -1,10 +1,10 @@
 <?php
-namespace SRIO\ArgumentResolver\Tests;
+namespace ArgumentResolver\Tests;
 
-use SRIO\ArgumentResolver\ArgumentResolver;
-use SRIO\ArgumentResolver\ArgumentResolverFactory;
-use SRIO\ArgumentResolver\Tests\Fixtures\TestClass;
-use SRIO\ArgumentResolver\Tests\Fixtures\TestValueObject;
+use ArgumentResolver\ArgumentResolver;
+use ArgumentResolver\ArgumentResolverFactory;
+use ArgumentResolver\Tests\Fixtures\TestClass;
+use ArgumentResolver\Tests\Fixtures\TestValueObject;
 
 class ArgumentResolverTest extends \PHPUnit_Framework_TestCase
 {
