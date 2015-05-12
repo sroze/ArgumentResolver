@@ -15,7 +15,7 @@ The suggested installation method is via composer:
 composer require sroze/argument-resolver
 ```
 
-## Usage
+## Resolving arguments
 
 The argument resolver can be created easily using the `ArgumentResolverFactory` class:
 ```php
@@ -24,11 +24,11 @@ use SRIO\ArgumentResolver\ArgumentResolverFactory;
 $argumentResolver = ArgumentResolverFactory::create();
 ```
 
-You now have to endpoints on the `ArgumentResolver` class:
-- `call`: simply call a given callable with a list of available arguments
-- `resolveArguments`: returns an ordered array of resolved arguments for the given callback
+The `resolveArguments` method returns an ordered array of resolved arguments for the given callable. The method's arguments
+are:
+1. The [callable](http://php.net/manual/en/language.types.callable.php)
+2. The available arguments
 
-Here's an example of an adaptive call on different closures.
 ```php
 $closures = [
     function(MyClass $object) {
@@ -40,7 +40,7 @@ $closures = [
 ];
 
 foreach ($closures as $callable) {
-    $result = $argumentResolver->call($callable, [
+    $arguments = $argumentResolver->resolveArguments($callable, [
         'classObject' => new MyClass(),
         'bar' => 'foo',
         'list' => ['an', 'array']
@@ -59,19 +59,26 @@ class Foo
     }
 }
 
-$argumentResolver->call([new Foo(), 'method'], [
+$argumentResolver->resolveArguments([new Foo(), 'method'], [
     'bar' => 1,
     'foo' => 2,
     'baz' => 3
 ]);
 
-// `method` has been called with the arguments (2, 1)
+// Which returns: [2, 1]
 ```
 
-The `callable` argument can be anything that match the [PHP's `callable` type](http://php.net/manual/en/language.types.callable.php).
+To prevent possible conflicts, the library follow priorities and constraints described in the [Rules](#rules) chapter.
 
-By the way, to prevent possible conflicts, the library follow priorities and constraints described in the [Rules](#rules)
-chapter.
+## The callable runner
+
+Because when you've resolved the needed arguments of a given callable it's often to call it, the library comes with a
+`CallableRunner` class that will do everything for you:
+
+```php
+$runner = new CallableRunner($argumentResolver);
+$runner->run($callable, $availableArguments);
+```
 
 ## Rules
 
