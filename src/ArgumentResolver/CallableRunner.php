@@ -19,13 +19,12 @@ class CallableRunner
      *
      * @param callable $callable
      * @param array    $availableArguments
-     * @param bool     $strict
      *
      * @return mixed
      */
-    public function run(callable $callable, array $availableArguments, $strict = false)
+    public function run(callable $callable, array $availableArguments)
     {
-        $arguments = $this->argumentResolver->resolveArguments($callable, $availableArguments, $strict);
+        $arguments = $this->argumentResolver->resolveArguments($callable, $availableArguments);
 
         return call_user_func_array($callable, $arguments);
     }

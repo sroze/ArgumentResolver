@@ -43,11 +43,10 @@ class ArgumentResolver
      *
      * @param mixed $callable
      * @param array $availableArguments
-     * @param bool  $strict
      *
      * @return array
      */
-    public function resolveArguments($callable, array $availableArguments = [], $strict = false)
+    public function resolveArguments($callable, array $availableArguments = [])
     {
         $descriptions = $this->argumentDescriptor->getDescriptions($callable)->sortByPosition();
         $constraints = $this->constraintResolver->resolveConstraints($descriptions);

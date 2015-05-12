@@ -13,7 +13,7 @@ class CallableRunnerSpec extends ObjectBehavior
         $callable = function ($foo) {
             return $foo;
         };
-        $argumentResolver->resolveArguments($callable, [], false)->willReturn(['bar']);
+        $argumentResolver->resolveArguments($callable, [])->willReturn(['bar']);
         $this->beConstructedWith($argumentResolver);
 
         $this->run($callable, [])->shouldReturn('bar');
@@ -23,7 +23,7 @@ class CallableRunnerSpec extends ObjectBehavior
     {
         $resolutionConstraint = new ResolutionConstraint('type');
         $callable = [$resolutionConstraint, 'getType'];
-        $argumentResolver->resolveArguments($callable, [], false)->willReturn([]);
+        $argumentResolver->resolveArguments($callable, [])->willReturn([]);
         $this->beConstructedWith($argumentResolver);
 
         $this->run($callable, [])->shouldReturn('type');
