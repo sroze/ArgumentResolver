@@ -2,6 +2,9 @@
 
 namespace ArgumentResolver;
 
+use ArgumentResolver\Argument\ArgumentDescriptor;
+use ArgumentResolver\Resolution\ConstraintResolver;
+
 final class ArgumentResolverFactory
 {
     /**
@@ -11,6 +14,6 @@ final class ArgumentResolverFactory
      */
     public static function create()
     {
-        return new ArgumentResolver(new ArgumentDescriptor());
+        return new ArgumentResolver(new ArgumentDescriptor(), new ConstraintResolver());
     }
 }
