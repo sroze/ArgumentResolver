@@ -24,7 +24,7 @@ class ArgumentDescriptor
                 $parameter->getPosition(),
                 $this->getParameterType($parameter),
                 !$parameter->isOptional(),
-                $parameter->getDefaultValue()
+                $parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null
             ));
         }
 
@@ -70,7 +70,7 @@ class ArgumentDescriptor
      */
     private function getReflection($callable)
     {
-        if ($callable instanceof \ReflectionFunction) {
+        if ($callable instanceof \ReflectionFunctionAbstract) {
             return $callable;
         }
 
