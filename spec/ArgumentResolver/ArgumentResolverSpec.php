@@ -88,7 +88,7 @@ class ArgumentResolverSpec extends ObjectBehavior
 
         $this->resolveArguments($callable, [
             'foo' => 'bar',
-        ])->shouldReturn(['bar']);
+        ])->shouldReturn(['bar', null]);
     }
 
     function it_set_default_value_if_an_optional_argument_is_missing_and_needed(ArgumentDescriptor $argumentDescriptor)
@@ -119,6 +119,22 @@ class ArgumentResolverSpec extends ObjectBehavior
 
         $this->shouldThrow(ResolutionException::class)->during('resolveArguments', [$callable, [
             'bar' => 'bar',
+        ]]);
+    }
+
+    function it_throw_an_exception_if_required_argument_is_missing_at_the_end(ArgumentDescriptor $argumentDescriptor)
+    {
+        $this->beConstructedWith($argumentDescriptor, new ConstraintResolver());
+        $callable = function () {};
+        $argumentDescriptor->getDescriptions($callable)->willReturn(new ArgumentDescriptions([
+            new ArgumentDescription('foo', 0, ArgumentDescription::TYPE_SCALAR, true),
+            new ArgumentDescription('bar', 1, ArgumentDescription::TYPE_SCALAR, true),
+        ]));
+
+        $argumentDescriptor->getValueType('foo')->willReturn(ArgumentDescription::TYPE_SCALAR);
+
+        $this->shouldThrow(ResolutionException::class)->during('resolveArguments', [$callable, [
+            'foo' => 'foo',
         ]]);
     }
 

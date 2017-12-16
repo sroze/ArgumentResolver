@@ -56,6 +56,14 @@ class ArgumentDescriptions implements \IteratorAggregate
     }
 
     /**
+     * @return int
+     */
+    public function count()
+    {
+        return count($this->descriptions);
+    }
+
+    /**
      * @param int $position
      *
      * @return ArgumentDescription|null

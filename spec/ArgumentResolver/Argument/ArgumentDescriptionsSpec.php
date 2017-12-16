@@ -41,4 +41,11 @@ class ArgumentDescriptionsSpec extends ObjectBehavior
 
         $this->getByPosition(1)->shouldReturn($description);
     }
+
+    function it_returns_the_number_of_descriptions()
+    {
+        $this->count()->shouldBe(0);
+        $this->add(new ArgumentDescription('foo', 0, ArgumentDescription::TYPE_SCALAR, true));
+        $this->count()->shouldBe(1);
+    }
 }
