@@ -87,15 +87,23 @@ class Resolutions implements \IteratorAggregate
     }
 
     /**
+     * @param int $expectedArguments The number of expected arguments
+     *
      * @return array
      */
-    public function getMissingResolutionPositions()
+    public function getMissingResolutionPositions($expectedArguments = null)
     {
         $positions = [];
 
-        foreach (range(0, $this->getHighestPosition()) as $position) {
+        foreach (range(0, $highestPosition = $this->getHighestPosition()) as $position) {
             if (null === $this->getByPosition($position)) {
                 $positions[] = $position;
+            }
+        }
+
+        if (is_int($expectedArguments)) {
+            for ($i = $highestPosition + 1; $i < $expectedArguments; $i++) {
+                $positions[] = $i;
             }
         }
 

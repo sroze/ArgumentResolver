@@ -52,11 +52,13 @@ class ArgumentResolver
 
         $resolutions = new Resolutions();
         foreach ($descriptions as $description) {
-            $argumentResolutions = $this->getArgumentResolutions($constraints, $description, $availableArguments);
-            $resolutions->addCollection($argumentResolutions);
+            $resolutions->addCollection(
+                $this->getArgumentResolutions($constraints, $description, $availableArguments)
+            );
         }
 
         $this->addMissingResolutions($resolutions, $descriptions);
+
         $arguments = $resolutions->sortByPriority()->toArgumentsArray();
 
         return $arguments;
@@ -125,7 +127,7 @@ class ArgumentResolver
      */
     private function addMissingResolutions(Resolutions $resolutions, ArgumentDescriptions $descriptions)
     {
-        $missingResolutionPositions = $resolutions->getMissingResolutionPositions();
+        $missingResolutionPositions = $resolutions->getMissingResolutionPositions($descriptions->count());
 
         foreach ($missingResolutionPositions as $position) {
             $description = $descriptions->getByPosition($position);
