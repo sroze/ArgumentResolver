@@ -5,6 +5,7 @@ namespace ArgumentResolver;
 use ArgumentResolver\Argument\ArgumentDescription;
 use ArgumentResolver\Argument\ArgumentDescriptions;
 use ArgumentResolver\Argument\ArgumentDescriptor;
+use ArgumentResolver\Exception\ArgumentResolutionException;
 use ArgumentResolver\Exception\ResolutionException;
 use ArgumentResolver\Resolution\ConstraintResolver;
 use ArgumentResolver\Resolution\Resolution;
@@ -132,10 +133,13 @@ class ArgumentResolver
         foreach ($missingResolutionPositions as $position) {
             $description = $descriptions->getByPosition($position);
             if ($description->isRequired()) {
-                throw new ResolutionException(sprintf(
-                    'Argument at position %d is required and wasn\'t resolved',
-                    $description->getPosition()
-                ));
+                throw new ArgumentResolutionException(
+                    sprintf(
+                        'Argument at position %d is required and wasn\'t resolved',
+                        $description->getPosition()
+                    ),
+                    $description
+                );
             }
 
             $resolutions->add(new Resolution($description->getPosition(), $description->getDefaultValue(), 0));

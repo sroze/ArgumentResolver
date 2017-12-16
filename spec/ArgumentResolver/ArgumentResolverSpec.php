@@ -5,6 +5,7 @@ namespace spec\ArgumentResolver;
 use ArgumentResolver\Argument\ArgumentDescription;
 use ArgumentResolver\Argument\ArgumentDescriptions;
 use ArgumentResolver\Argument\ArgumentDescriptor;
+use ArgumentResolver\Exception\ArgumentResolutionException;
 use ArgumentResolver\Exception\ResolutionException;
 use ArgumentResolver\Resolution\ConstraintResolver;
 use PhpSpec\ObjectBehavior;
@@ -117,7 +118,7 @@ class ArgumentResolverSpec extends ObjectBehavior
 
         $argumentDescriptor->getValueType('bar')->willReturn(ArgumentDescription::TYPE_SCALAR);
 
-        $this->shouldThrow(ResolutionException::class)->during('resolveArguments', [$callable, [
+        $this->shouldThrow(ArgumentResolutionException::class)->during('resolveArguments', [$callable, [
             'bar' => 'bar',
         ]]);
     }
@@ -133,7 +134,7 @@ class ArgumentResolverSpec extends ObjectBehavior
 
         $argumentDescriptor->getValueType('foo')->willReturn(ArgumentDescription::TYPE_SCALAR);
 
-        $this->shouldThrow(ResolutionException::class)->during('resolveArguments', [$callable, [
+        $this->shouldThrow(ArgumentResolutionException::class)->during('resolveArguments', [$callable, [
             'foo' => 'foo',
         ]]);
     }
