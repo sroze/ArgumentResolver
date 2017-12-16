@@ -78,7 +78,12 @@ class ResolutionsSpec extends ObjectBehavior
         $this->getMissingResolutionPositions(5)->shouldReturn([1, 3, 4]);
     }
 
-    function it_returns_no_missing_resultions_if_no_expected_parameters()
+    function it_returns_a_missing_resolution_with_no_resolutions()
+    {
+        $this->getMissingResolutionPositions(1)->shouldBe([0]);
+    }
+
+    function it_returns_no_missing_resolutions_if_no_expected_parameters()
     {
         $this->getMissingResolutionPositions(0)->shouldBe([]);
     }

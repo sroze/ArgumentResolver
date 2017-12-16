@@ -103,9 +103,9 @@ class Resolutions implements \IteratorAggregate
             }
         }
 
-        if (is_int($expectedArguments)) {
-            for ($i = $highestPosition + 1; $i < $expectedArguments; $i++) {
-                $positions[] = $i;
+        if (is_int($expectedArguments) && $expectedArguments > 0) {
+            for ($i = $highestPosition === null ? -1 : $highestPosition; $i < ($expectedArguments - 1); $i++) {
+                $positions[] = $i + 1;
             }
         }
 
