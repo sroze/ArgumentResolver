@@ -95,9 +95,11 @@ class Resolutions implements \IteratorAggregate
     {
         $positions = [];
 
-        foreach (range(0, $highestPosition = $this->getHighestPosition()) as $position) {
-            if (null === $this->getByPosition($position)) {
-                $positions[] = $position;
+        if (null !== ($highestPosition = $this->getHighestPosition())) {
+            foreach (range(0, $highestPosition) as $position) {
+                if (null === $this->getByPosition($position)) {
+                    $positions[] = $position;
+                }
             }
         }
 
@@ -111,12 +113,15 @@ class Resolutions implements \IteratorAggregate
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     private function getHighestPosition()
     {
-        $position = 0;
+        if (count($this->resolutions) == 0) {
+            return null;
+        }
 
+        $position = 0;
         foreach ($this->resolutions as $resolution) {
             $position = max($position, $resolution->position());
         }
