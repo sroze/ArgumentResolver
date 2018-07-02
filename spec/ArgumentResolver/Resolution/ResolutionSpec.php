@@ -8,7 +8,7 @@ class ResolutionSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith(0, 'value', 1);
+        $this->beConstructedWith(0, 'name', 'value', 1);
     }
 
     function it_exposes_value()
