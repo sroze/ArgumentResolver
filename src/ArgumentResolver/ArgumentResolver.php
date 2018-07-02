@@ -62,6 +62,8 @@ class ArgumentResolver
 
         $arguments = $resolutions->sortByPriority()->toArgumentsArray();
 
+        $this->validateAgainstExtraArguments($availableArguments, $resolutions);
+
         return $arguments;
     }
 
@@ -80,7 +82,7 @@ class ArgumentResolver
             $priority = $this->getArgumentPriority($constraints, $description, $argumentName, $argumentValue);
 
             if ($priority > 0) {
-                $resolutions[] = new Resolution($description->getPosition(), $argumentValue, $priority);
+                $resolutions[] = new Resolution($description->getPosition(), $argumentName, $argumentValue, $priority);
             }
         }
 
@@ -142,7 +144,18 @@ class ArgumentResolver
                 );
             }
 
-            $resolutions->add(new Resolution($description->getPosition(), $description->getDefaultValue(), 0));
+            $resolutions->add(new Resolution($description->getPosition(), $description->getName(), $description->getDefaultValue(), 0));
+        }
+    }
+
+    private function validateAgainstExtraArguments(array $availableArguments, Resolutions $resolutions)
+    {
+        $unrecognisedArguments = array_diff(array_keys($availableArguments), $resolutions->argumentNames());
+        if (count($unrecognisedArguments) > 1) {
+            throw new RuntimeException(sprintf(
+                'The following arguments are not known: "%s", known arguments: "%s"',
+                implode('", "', $unrecognisedArguments), implode('", "', $resolutions->argumentNames())
+            ));
         }
     }
 }

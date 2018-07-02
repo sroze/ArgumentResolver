@@ -26,6 +26,16 @@ class Resolutions implements \IteratorAggregate
     }
 
     /**
+     * @return string[]
+     */
+    public function argumentNames()
+    {
+        return array_map(function (Resolution $resolution) {
+            return $resolution->argumentName();
+        }, $this->resolutions);
+    }
+
+    /**
      * @param array $resolutions
      */
     public function addCollection(array $resolutions)

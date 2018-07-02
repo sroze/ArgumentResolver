@@ -20,13 +20,19 @@ class Resolution
     private $priority;
 
     /**
+     * @var string
+     */
+    private $argumentName;
+
+    /**
      * @param int   $position
      * @param mixed $value
      * @param int   $priority
      */
-    public function __construct($position, $value, $priority)
+    public function __construct($position, $argumentName, $value, $priority)
     {
         $this->position = $position;
+        $this->argumentName = $argumentName;
         $this->value = $value;
         $this->priority = $priority;
     }
@@ -53,5 +59,13 @@ class Resolution
     public function priority()
     {
         return $this->priority;
+    }
+
+    /**
+     * @return string
+     */
+    public function argumentName()
+    {
+        return $this->argumentName;
     }
 }
